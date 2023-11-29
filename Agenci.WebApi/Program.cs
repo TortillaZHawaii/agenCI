@@ -36,6 +36,22 @@ app.MapGet("/parkings", (double latitude, double longitude, IGrainFactory grainF
     .WithName("GetParkingsInRange")
     .WithOpenApi();
 
+app.MapGet("/parkings/{id}", (string id, IGrainFactory grainFactory) =>
+    {
+        var parkingGrain = grainFactory.GetGrain<IParkingUserGrain>(id);
+        return parkingGrain.GetParkingDetailedInfo();
+    })
+    .WithName("GetParkingInfo")
+    .WithOpenApi();
+
+app.MapPost("/parkings/{id}", (string id, ParkingInfo info, IGrainFactory grainFactory) =>
+    {
+        var parkingGrain = grainFactory.GetGrain<IParkingUserGrain>(id);
+        parkingGrain.UpdateParkingInfo(info);
+    })
+    .WithName("ReserveParking")
+    .WithOpenApi();
+
 app.MapPost("/parkings", async (ParkingInfo parking, IGrainFactory grainFactory) =>
     {
         var orchestratorGrain = grainFactory.GetGrain<IOrchestratorGrain>(Guid.Empty);
