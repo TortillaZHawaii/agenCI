@@ -3,16 +3,16 @@ using Orleans.Runtime;
 
 namespace Agenci.Grains;
 
-public class ParkingGrain : IParkingGrain, IParkingUserGrain
+public class ParkingGrain : Grain, IParkingGrain, IParkingUserGrain
 {
     private readonly IPersistentState<List<Reservation>> _reservations;
     private readonly IPersistentState<ParkingInfo> _parkingInfo;
     private readonly IGrainFactory _grainFactory;
     
     public ParkingGrain(
-        [PersistentState("parkingIntervals", "parkingIntervalsStore")]
+        [PersistentState("parkingReservations", "parkingStore")]
         IPersistentState<List<Reservation>> reservations,
-        [PersistentState("parkingDto", "parkingDtoStore")]
+        [PersistentState("parkingInfo", "parkingStore")]
         IPersistentState<ParkingInfo> parkingInfo,
         IGrainFactory grainFactory)
     {

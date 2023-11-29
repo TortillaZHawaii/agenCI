@@ -3,7 +3,7 @@ using Orleans.Runtime;
 
 namespace Agenci.Grains;
 
-public class DriverUserGrain : IDriverUserGrain
+public class DriverUserGrain : Grain, IDriverUserGrain
 {
     private readonly IGrainFactory _grainFactory;
     private readonly IPersistentState<List<ParkingOffer>> _parkingOffers;
@@ -13,7 +13,7 @@ public class DriverUserGrain : IDriverUserGrain
         IGrainFactory grainFactory,
         [PersistentState("parkingOffers", "driverStore")]
         IPersistentState<List<ParkingOffer>> parkingOffers,
-        [PersistentState("parkingOffers", "driverStore")]
+        [PersistentState("history", "driverStore")]
         IPersistentState<List<ParkingOffer>> history)
     {
         _grainFactory = grainFactory;
@@ -61,6 +61,6 @@ public class DriverUserGrain : IDriverUserGrain
 
     public Task<List<ParkingOffer>> GetReservedParkingHistory()
     {
-        return Task.FromResult(_history.State);
+        return Task.FromResult(_history.State ?? new List<ParkingOffer>());
     }
 }

@@ -1,5 +1,4 @@
 using Agenci.Abstractions;
-using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +11,8 @@ builder.Host.UseOrleans(siloBuilder =>
 {
     siloBuilder.UseLocalhostClustering();
     siloBuilder.AddMemoryGrainStorage("orchestratorStore");
+    siloBuilder.AddMemoryGrainStorage("driverStore");
+    siloBuilder.AddMemoryGrainStorage("parkingStore");
     siloBuilder.AddMemoryGrainStorageAsDefault();
     // siloBuilder.ConfigureApplicationParts(parts => parts.AddFromApplicationBaseDirectory());
     siloBuilder.UseDashboard(x => x.HostSelf = true);
@@ -44,20 +45,12 @@ app.MapGet("/parkings/{id}", (string id, IGrainFactory grainFactory) =>
     .WithName("GetParkingInfo")
     .WithOpenApi();
 
-app.MapPost("/parkings/{id}", (string id, ParkingInfo info, IGrainFactory grainFactory) =>
+app.MapPost("/parkings/{id}", async (string id, ParkingInfo info, IGrainFactory grainFactory) =>
     {
         var parkingGrain = grainFactory.GetGrain<IParkingUserGrain>(id);
-        parkingGrain.UpdateParkingInfo(info);
+        await parkingGrain.UpdateParkingInfo(info);
     })
     .WithName("ReserveParking")
-    .WithOpenApi();
-
-app.MapPost("/parkings", async (ParkingInfo parking, IGrainFactory grainFactory) =>
-    {
-        var orchestratorGrain = grainFactory.GetGrain<IOrchestratorGrain>(Guid.Empty);
-        await orchestratorGrain.ReceiveParkingInformation(parking);
-    })
-    .WithName("AddParking")
     .WithOpenApi();
 
 app.Map("/dashboard", c => c.UseOrleansDashboard());
