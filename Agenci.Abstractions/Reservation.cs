@@ -14,4 +14,11 @@ public record Reservation
 
     [Id(3)]
     public required DateTime End { get; init; }
+    
+    [Id(4)]
+    public required bool Paid { get; init; }
+    
+    // between [0, MaxCapacity)
+    [Id(5)]
+    public int PlaceNumber { get; init; }
 }

@@ -36,27 +36,36 @@ public class DriverUserGrain : Grain, IDriverUserGrain
         return parkingOffers.Where(offer => offer.IsAvailable).ToList();
     }
 
-    public async Task<bool> ChooseParking(string parkingId)
+    public async Task<int?> ChooseParking(string parkingId)
     {
         if (_parkingOffers.State.All(offer => offer.Key != parkingId))
         {
-            return false;
+            return null;
         }
         
-        var parkingGrain = _grainFactory.GetGrain<IParkingGrain>(parkingId);
+        var chosenParkingGrain = _grainFactory.GetGrain<IParkingGrain>(parkingId);
+        var cancelledParkingGrains = _parkingOffers.State
+            .Where(offer => offer.Key != parkingId)
+            .Select(offer => _grainFactory.GetGrain<IParkingGrain>(offer.Key));
         
-        var result = await parkingGrain.ReserveParking(this.GetPrimaryKeyString());
+        var result = await chosenParkingGrain.ReserveParking(this.GetPrimaryKeyString());
         
-        if (result) 
+        // cancel all other reservations, we don't care about the result
+        await Task.WhenAny(
+            Task.Delay(TimeSpan.FromSeconds(15)),
+            Task.WhenAll(cancelledParkingGrains.Select(grain => grain.CancelReservation(this.GetPrimaryKeyString())))
+        );
+        
+        if (result is not null) 
         {
             _history.State.Add(_parkingOffers.State.First(offer => offer.Key == parkingId));
             _parkingOffers.State.RemoveAll(offer => true);
             await _history.WriteStateAsync();
             await _parkingOffers.WriteStateAsync();
-            return true;
+            return result;
         }
         
-        return false;
+        return null;
     }
 
     public Task<List<ParkingOffer>> GetReservedParkingHistory()
