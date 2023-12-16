@@ -21,11 +21,8 @@ builder.Host.UseOrleans(siloBuilder =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
@@ -49,6 +46,36 @@ app.MapPost("/parkings/{id}", async (string id, ParkingInfo info, IGrainFactory 
     {
         var parkingGrain = grainFactory.GetGrain<IParkingUserGrain>(id);
         await parkingGrain.UpdateParkingInfo(info);
+    })
+    .WithName("UpdateParkingInfo")
+    .WithOpenApi();
+
+app.MapGet("/drivers/{id}/history", (string id, IGrainFactory grainFactory) =>
+    {
+        var driverGrain = grainFactory.GetGrain<IDriverUserGrain>(id);
+        return driverGrain.GetReservedParkingHistory();
+    })
+    .WithName("GetDriverHistory")
+    .WithOpenApi();
+
+// offers for driver in given location
+app.MapGet("/drivers/{id}/parkings", (string id, double latitude, double longitude, DateTime start, DateTime end, IGrainFactory grainFactory) =>
+    {
+        var driverGrain = grainFactory.GetGrain<IDriverUserGrain>(id);
+        return driverGrain.GetParkingOffers(latitude, longitude, start, end);
+    })
+    .WithName("GetParkingOffers")
+    .WithOpenApi();
+
+app.MapPost("/parkings/{id}/reserve", async (string id, string driverId, IGrainFactory grainFactory) =>
+    {
+        var driverGrain = grainFactory.GetGrain<IDriverUserGrain>(driverId);
+        var result = await driverGrain.ChooseParking(id);
+        if (result is null)
+        {
+            return Results.NotFound();
+        }
+        return Results.Ok(result);
     })
     .WithName("ReserveParking")
     .WithOpenApi();
