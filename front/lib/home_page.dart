@@ -36,44 +36,69 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: const Text("AgenCI"),
       ),
-      body: Column(
-        children: [
-          TextField(
-            controller: _usernameController,
-            decoration: const InputDecoration(
-              labelText: "Username",
-            ),
+      body: Center(
+        child: SizedBox(
+          width: 350,
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  controller: _usernameController,
+                  decoration: const InputDecoration(
+                    labelText: "Username",
+                  ),
+                ),
+              ),
+              // This is for show only
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: TextField(
+                  obscureText: true,
+                  autocorrect: false,
+                  enableSuggestions: false,
+                  decoration: InputDecoration(
+                    labelText: "Password",
+                  ),
+                ),
+              ),
+              ButtonBar(
+                children: [
+                  const Text("Login as a "),
+                  ElevatedButton(
+                    onPressed: _username.isEmpty
+                        ? null
+                        : () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DriverHomePage(
+                                  driverId: _username,
+                                ),
+                              ),
+                            );
+                          },
+                    child: const Text("Driver"),
+                  ),
+                  ElevatedButton(
+                    onPressed: _username.isEmpty
+                        ? null
+                        : () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    ParkingHomePage(parkingId: _username),
+                              ),
+                            );
+                          },
+                    child: const Text("Parking"),
+                  ),
+                ],
+              ),
+            ],
           ),
-          ElevatedButton(
-            onPressed: _username.isEmpty
-                ? null
-                : () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DriverHomePage(
-                          driverId: _username,
-                        ),
-                      ),
-                    );
-                  },
-            child: const Text("Driver"),
-          ),
-          ElevatedButton(
-            onPressed: _username.isEmpty
-                ? null
-                : () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            ParkingHomePage(parkingId: _username),
-                      ),
-                    );
-                  },
-            child: const Text("Parking"),
-          ),
-        ],
+        ),
       ),
     );
   }
