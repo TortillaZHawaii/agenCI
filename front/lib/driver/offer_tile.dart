@@ -11,7 +11,7 @@ class OfferTile extends StatelessWidget {
 
   final String parkingName;
   final String parkingAddress;
-  final double price;
+  final num price;
   final VoidCallback onTap;
 
   @override
@@ -19,7 +19,10 @@ class OfferTile extends StatelessWidget {
     return ListTile(
       title: Text(parkingName),
       subtitle: Text(parkingAddress),
-      trailing: Text("${price.toStringAsFixed(2)}€"),
+      trailing: Text(
+        "${price.toStringAsFixed(2)}\$",
+        style: Theme.of(context).textTheme.headlineMedium,
+      ),
       onTap: onTap,
     );
   }

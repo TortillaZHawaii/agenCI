@@ -71,7 +71,7 @@ class __HistoryPageBodyState extends State<_HistoryPageBody> {
             final parkingAddress = item["address"] as String;
             final title = "$parkingKey $parkingAddress";
 
-            final price = item["price"] as int;
+            final price = item["price"] as num;
             final priceFormatted = "${price.toStringAsFixed(2)} \$";
 
             final subtitle = "From $startFormatted to $endFormatted";
