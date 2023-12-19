@@ -16,7 +16,7 @@ class HistoryPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Driver $driverId History"),
+        title: const Text("History"),
       ),
       body: _HistoryPageBody(
         driverId: driverId,
