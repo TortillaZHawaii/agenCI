@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:agenci/driver/history_page.dart';
 import 'package:agenci/driver/offer_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -74,14 +75,15 @@ class SelectOfferPage extends StatelessWidget {
                               final parkingId = offer["key"] as String;
                               final url = Uri.parse(
                                 "${const String.fromEnvironment("API_BASE_URL")}"
-                                "parkings/$parkingId/reserve",
+                                "parkings/$parkingId/reserve"
+                                "?driverId=$driverId",
                               );
                               final response = await http.post(
                                 url,
-                                body: {
-                                  "driverId": driverId,
-                                },
                               );
+
+                              // 💥💥💥🔫 pop until could work better
+                              Navigator.pop(context);
                               Navigator.pop(context);
                               Navigator.pop(context);
 
@@ -92,6 +94,14 @@ class SelectOfferPage extends StatelessWidget {
                                   ),
                                 );
                               } else {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => HistoryPage(
+                                      driverId: driverId,
+                                    ),
+                                  ),
+                                );
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content: Text("Reserved"),
