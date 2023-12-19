@@ -1,3 +1,4 @@
+import 'package:agenci/driver/history_page.dart';
 import 'package:flutter/material.dart';
 
 class DriverHomePage extends StatelessWidget {
@@ -33,8 +34,13 @@ class DriverHomePage extends StatelessWidget {
                 ),
                 Card(
                   child: InkWell(
-                    onTap: () {
-                      //
+                    onTap: () async {
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => HistoryPage(driverId: driverId),
+                        ),
+                      );
                     },
                     child: const ListTile(
                       leading: Icon(Icons.history),

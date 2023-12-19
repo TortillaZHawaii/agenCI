@@ -1,7 +1,9 @@
 import 'package:agenci/home_page.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 void main() {
+  Intl.defaultLocale = "en_US";
   runApp(const MyApp());
 }
 
