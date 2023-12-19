@@ -11,6 +11,9 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    const apiBaseUrl = String.fromEnvironment("API_BASE_URL");
+    debugPrint("API_BASE_URL: $apiBaseUrl");
+
     return MaterialApp(
       title: 'AgenCI',
       theme: ThemeData(
