@@ -53,31 +53,39 @@ class __HistoryPageBodyState extends State<_HistoryPageBody> {
 
         final history = snapshot.data!;
 
-        final df = DateFormat("yyyy-MM-dd HH:mm");
+        final df = DateFormat("MMM dd HH:mm");
 
-        return ListView.builder(
+        return ListView.separated(
+          separatorBuilder: (context, index) => const Divider(),
           itemCount: history.length,
           itemBuilder: (context, index) {
             final item = history[index];
 
             final startFormatted = df.format(
-              DateTime.parse(item["parkingStartTime"] as String),
+              DateTime.parse(item["start"] as String),
             );
             final endFormatted = df.format(
-              DateTime.parse(item["parkingEndTime"] as String),
+              DateTime.parse(item["end"] as String),
             );
             final parkingKey = item["key"] as String;
-            final title = "$parkingKey: $startFormatted - $endFormatted";
+            final parkingAddress = item["address"] as String;
+            final title = "$parkingKey $parkingAddress";
 
-            final price = item["parkingSpacePrice"] as double;
+            final price = item["price"] as int;
             final priceFormatted = "${price.toStringAsFixed(2)} \$";
 
-            final parkingAddress = item["parkingSpaceAddress"] as String;
+            final subtitle = "From $startFormatted to $endFormatted";
 
             return ListTile(
               title: Text(title),
-              subtitle: Text(parkingAddress),
-              trailing: Text(priceFormatted),
+              subtitle: Text(subtitle),
+              trailing: Text(
+                priceFormatted,
+                style: const TextStyle(
+                  fontWeight: FontWeight.normal,
+                  fontSize: 16,
+                ),
+              ),
             );
           },
         );
