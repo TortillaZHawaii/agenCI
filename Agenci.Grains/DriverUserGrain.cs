@@ -33,6 +33,8 @@ public class DriverUserGrain : Grain, IDriverUserGrain
                 => parkingGrain.GetParkingPriceResponse(start, end, this.GetPrimaryKeyString())));
         
         _parkingOffers.State = parkingOffers.ToList();
+        await _parkingOffers.WriteStateAsync();
+        
         return parkingOffers.Where(offer => offer.IsAvailable).ToList();
     }
 
