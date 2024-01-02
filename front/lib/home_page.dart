@@ -1,5 +1,6 @@
 import 'package:agenci/driver/driver_home_page.dart';
 import 'package:agenci/parking/parking_home_page.dart';
+import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -9,10 +10,13 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
+enum LoginType { driver, parking }
+
 class _HomePageState extends State<HomePage> {
   final TextEditingController _usernameController = TextEditingController();
 
   String _username = "";
+  LoginType loginType = LoginType.driver;
 
   @override
   void initState() {
@@ -62,37 +66,16 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
+
               ButtonBar(
                 children: [
-                  const Text("Login as a "),
                   ElevatedButton(
                     onPressed: _username.isEmpty
                         ? null
                         : () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => DriverHomePage(
-                                  driverId: _username,
-                                ),
-                              ),
-                            );
+                            login();
                           },
-                    child: const Text("Driver"),
-                  ),
-                  ElevatedButton(
-                    onPressed: _username.isEmpty
-                        ? null
-                        : () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    ParkingHomePage(parkingId: _username),
-                              ),
-                            );
-                          },
-                    child: const Text("Parking"),
+                    child: const Text("Login"),
                   ),
                 ],
               ),
@@ -100,6 +83,46 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 80.0),
+        child: AnimatedToggleSwitch<LoginType>.dual(
+          current: loginType,
+          first: LoginType.driver,
+          second: LoginType.parking,
+          spacing: 50.0,
+          style: const ToggleStyle(
+            borderColor: Colors.transparent,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black26,
+                spreadRadius: 1,
+                blurRadius: 2,
+                offset: Offset(0, 1.5),
+              ),
+            ],
+          ),
+          borderWidth: 5.0,
+          onChanged: (b) => setState(() {
+            loginType = b;
+          }),
+          styleBuilder: (b) => const ToggleStyle(
+            indicatorColor: Color.fromARGB(255, 225, 185, 117),
+          ),
+          textBuilder: (value) => value == LoginType.driver
+              ? const Center(child: Text('Driver'))
+              : const Center(child: Text('Parking')),
+        ),
+      ),
+    );
+  }
+
+  void login() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => loginType == LoginType.driver
+              ? DriverHomePage(driverId: _username)
+              : ParkingHomePage(parkingId: _username)),
     );
   }
 }
