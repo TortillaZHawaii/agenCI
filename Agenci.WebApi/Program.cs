@@ -6,6 +6,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "Default", policyBuilder => policyBuilder.WithOrigins("*")
+        .AllowAnyMethod()
+        .AllowAnyHeader());
+});
 
 builder.Host.UseOrleans(siloBuilder =>
 {
@@ -21,10 +27,12 @@ builder.Host.UseOrleans(siloBuilder =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.UseCors("Default");
+
 app.UseSwagger();
 app.UseSwaggerUI();
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 
 app.MapGet("/parkings", (double latitude, double longitude, IGrainFactory grainFactory) =>
     {
