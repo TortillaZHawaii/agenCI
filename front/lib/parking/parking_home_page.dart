@@ -35,7 +35,7 @@ class _HistoryPageBody extends StatefulWidget {
 class __HistoryPageBodyState extends State<_HistoryPageBody> {
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Map<String, dynamic>>>(
+    return FutureBuilder<Map<String, dynamic>>(
       future: _fetchHistory(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
@@ -48,7 +48,8 @@ class __HistoryPageBodyState extends State<_HistoryPageBody> {
           );
         }
 
-        final Map<String, dynamic> history = snapshot.data![0]["reservations"] as Map<String, dynamic>;
+        final List<dynamic> history =
+            snapshot.data!["reservations"] as List<dynamic>;
 
         final df = DateFormat("MMM dd HH:mm");
 
@@ -56,7 +57,7 @@ class __HistoryPageBodyState extends State<_HistoryPageBody> {
           separatorBuilder: (context, index) => const Divider(),
           itemCount: history.length,
           itemBuilder: (context, index) {
-            final item = history[index];
+            final item = history[index] as Map<String, dynamic>;
 
             final startFormatted = df.format(
               DateTime.parse(item["start"] as String),
@@ -89,7 +90,7 @@ class __HistoryPageBodyState extends State<_HistoryPageBody> {
     );
   }
 
-  Future<List<Map<String, dynamic>>> _fetchHistory() async {
+  Future<Map<String, dynamic>> _fetchHistory() async {
     final response = await http.get(
       Uri.parse(
         "${_HistoryPageBody.apiBaseUrl}parkings/${widget.parkingId}",
@@ -100,7 +101,7 @@ class __HistoryPageBodyState extends State<_HistoryPageBody> {
       throw Exception("Failed to fetch history");
     }
 
-    final json = jsonDecode(response.body) as List<dynamic>;
-    return json.cast<Map<String, dynamic>>();
+    final json = jsonDecode(response.body) as Map<String, dynamic>;
+    return json;
   }
 }
