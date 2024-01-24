@@ -29,8 +29,7 @@ class _HistoryPageBody extends StatefulWidget {
   const _HistoryPageBody({super.key, required this.driverId});
 
   final String driverId;
-  static String apiBaseUrl = String.fromEnvironment("API_BASE_URL");
-
+  static const String apiBaseUrl = String.fromEnvironment("API_BASE_URL");
 
   @override
   State<_HistoryPageBody> createState() => __HistoryPageBodyState();

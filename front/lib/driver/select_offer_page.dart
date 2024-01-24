@@ -72,7 +72,8 @@ class SelectOfferPage extends StatelessWidget {
                           ),
                           TextButton(
                             onPressed: () async {
-                              const apiBaseUrl = String.fromEnvironment("API_BASE_URL");
+                              const apiBaseUrl =
+                                  String.fromEnvironment("API_BASE_URL");
                               final parkingId = offer["key"] as String;
                               final url = Uri.parse(
                                 "$apiBaseUrl"
@@ -127,7 +128,7 @@ class SelectOfferPage extends StatelessWidget {
 
   Future<List<Map<String, dynamic>>> _fetchOffers() async {
     try {
-      String apiBaseUrl = String.fromEnvironment("API_BASE_URL");
+      const apiBaseUrl = String.fromEnvironment("API_BASE_URL");
       final url = Uri.parse(
         '${apiBaseUrl}drivers/$driverId/parkings?'
         'start=${start.toUtc().toIso8601String()}&'
