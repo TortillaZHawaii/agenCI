@@ -1,10 +1,23 @@
 import 'package:agenci/driver/select_offer_page.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class SelectRangePage extends StatelessWidget {
+class SelectRangePage extends StatefulWidget {
   const SelectRangePage({super.key, required this.driverId});
-
   final String driverId;
+
+  @override
+  State<SelectRangePage> createState() => _SelectRangePageState();
+}
+
+class _SelectRangePageState extends State<SelectRangePage> {
+  late GoogleMapController mapController;
+  final _center = LatLng(52.2195, 21.0112);
+  final _zoom = 16.0;
+
+  void _onMapCreated(GoogleMapController controller) {
+    mapController = controller;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,12 +27,33 @@ class SelectRangePage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          const Expanded(
+          Expanded(
             child: Placeholder(
-              child: Center(
-                child: Text("Map goes here"),
-              ),
-            ),
+                child: Stack(
+              alignment: Alignment.center,
+              children: [
+                Center(
+                  child: GoogleMap(
+                    onMapCreated: _onMapCreated,
+                    initialCameraPosition: CameraPosition(
+                      target: _center,
+                      zoom: _zoom,
+                    ),
+                  ),
+                ),
+                Image.asset(
+                  'images/picker.png',
+                  scale: 4,
+                  frameBuilder:
+                      (context, child, frame, wasSynchronouslyLoaded) {
+                    return Transform.translate(
+                      offset: const Offset(8, -37),
+                      child: child,
+                    );
+                  },
+                ),
+              ],
+            )),
           ),
           Padding(
             padding: const EdgeInsets.all(8),
@@ -82,14 +116,25 @@ class SelectRangePage extends StatelessWidget {
                 );
 
                 // TODO: Get latitude and longitude from map
-                final latitude = 0.0;
-                final longitude = 0.0;
+                double screenWidth = MediaQuery.of(context).size.width *
+                    MediaQuery.of(context).devicePixelRatio;
+                double screenHeight = MediaQuery.of(context).size.height *
+                    MediaQuery.of(context).devicePixelRatio;
+
+                double middleX = screenWidth / 2;
+                double middleY = screenHeight / 2;
+
+                var screenCoordinate = ScreenCoordinate(x: middleX.round(), y: middleY.round());
+                LatLng latLng = await mapController.getLatLng(screenCoordinate);
+
+                final latitude = latLng.latitude;
+                final longitude = latLng.longitude;
 
                 await Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => SelectOfferPage(
-                      driverId: driverId,
+                      driverId: widget.driverId,
                       start: start,
                       end: end,
                       latitude: latitude,

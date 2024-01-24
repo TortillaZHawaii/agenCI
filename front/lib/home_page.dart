@@ -122,7 +122,7 @@ class _HomePageState extends State<HomePage> {
       MaterialPageRoute(
           builder: (context) => loginType == LoginType.driver
               ? DriverHomePage(driverId: _username)
-              : ParkingHomePage(parkingId: _username)),
+              : ParkingHomePage(parkingId: _username),),
     );
   }
 }

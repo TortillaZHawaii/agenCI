@@ -72,9 +72,10 @@ class SelectOfferPage extends StatelessWidget {
                           ),
                           TextButton(
                             onPressed: () async {
+                              const apiBaseUrl = String.fromEnvironment("API_BASE_URL");
                               final parkingId = offer["key"] as String;
                               final url = Uri.parse(
-                                "${const String.fromEnvironment("API_BASE_URL")}"
+                                "$apiBaseUrl"
                                 "parkings/$parkingId/reserve"
                                 "?driverId=$driverId",
                               );
@@ -125,23 +126,28 @@ class SelectOfferPage extends StatelessWidget {
   }
 
   Future<List<Map<String, dynamic>>> _fetchOffers() async {
-    const String apiBaseUrl = String.fromEnvironment("API_BASE_URL");
-    final url = Uri.parse(
-      '${apiBaseUrl}drivers/$driverId/parkings?'
-      'start=${start.toUtc().toIso8601String()}&'
-      'end=${end.toUtc().toIso8601String()}&'
-      'latitude=$latitude&'
-      'longitude=$longitude',
-    );
+    try {
+      String apiBaseUrl = String.fromEnvironment("API_BASE_URL");
+      final url = Uri.parse(
+        '${apiBaseUrl}drivers/$driverId/parkings?'
+        'start=${start.toUtc().toIso8601String()}&'
+        'end=${end.toUtc().toIso8601String()}&'
+        'latitude=$latitude&'
+        'longitude=$longitude',
+      );
 
-    final response = await http.get(url);
+      final response = await http.get(url);
 
-    if (response.statusCode != 200) {
-      throw Exception("Failed to fetch offers");
+      if (response.statusCode != 200) {
+        throw Exception("Failed to fetch offers");
+      }
+
+      final body = jsonDecode(response.body) as List<dynamic>;
+
+      return body.cast<Map<String, dynamic>>();
+    } on Exception catch (e) {
+      print(e);
+      rethrow;
     }
-
-    final body = jsonDecode(response.body) as List<dynamic>;
-
-    return body.cast<Map<String, dynamic>>();
   }
 }
