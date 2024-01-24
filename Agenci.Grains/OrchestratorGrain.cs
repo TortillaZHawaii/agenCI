@@ -24,7 +24,7 @@ public class OrchestratorGrain : Grain, IOrchestratorGrain
     public Task<ParkingsInRange> GetParkingsInRange(double latitude, double longitude)
     {
         var parkings = _state.State
-            .Where(parking => GetDistanceSquared(latitude, longitude, parking.Latitude, parking.Longitude) < 0.0001)
+            .Where(parking => GetDistanceSquared(latitude, longitude, parking.Latitude, parking.Longitude) < 0.1)
             .ToList();
         return Task.FromResult(new ParkingsInRange
         {
