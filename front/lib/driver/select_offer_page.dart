@@ -128,7 +128,7 @@ class SelectOfferPage extends StatelessWidget {
 
   Future<List<Map<String, dynamic>>> _fetchOffers() async {
     try {
-      const apiBaseUrl = String.fromEnvironment("API_BASE_URL");
+      const String apiBaseUrl = String.fromEnvironment("API_BASE_URL");
       final url = Uri.parse(
         '${apiBaseUrl}drivers/$driverId/parkings?'
         'start=${start.toUtc().toIso8601String()}&'

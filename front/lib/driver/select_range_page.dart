@@ -41,19 +41,13 @@ class _SelectRangePageState extends State<SelectRangePage> {
                     ),
                   ),
                 ),
-                Image.asset(
-                  'images/picker.png',
-                  scale: 4,
-                  frameBuilder:
-                      (context, child, frame, wasSynchronouslyLoaded) {
-                    return Transform.translate(
-                      offset: const Offset(8, -37),
-                      child: child,
-                    );
-                  },
-                ),
-              ],
-            )),
+                Icon(
+                  Icons.control_point,
+                  size: 40
+                )
+              ]
+            ),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(8),
