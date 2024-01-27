@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agenci.Grains", "Agenci.Gra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agenci.WebApi", "Agenci.WebApi\Agenci.WebApi.csproj", "{2C9EA7E0-6B2E-45C1-814B-815956B0440F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agenci.UnitTests", "Agenci.UnitTests\Agenci.UnitTests.csproj", "{08C7EAB2-0DD8-4BCE-96E0-C4418D7B4BF7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{2C9EA7E0-6B2E-45C1-814B-815956B0440F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C9EA7E0-6B2E-45C1-814B-815956B0440F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C9EA7E0-6B2E-45C1-814B-815956B0440F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08C7EAB2-0DD8-4BCE-96E0-C4418D7B4BF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08C7EAB2-0DD8-4BCE-96E0-C4418D7B4BF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08C7EAB2-0DD8-4BCE-96E0-C4418D7B4BF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08C7EAB2-0DD8-4BCE-96E0-C4418D7B4BF7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
