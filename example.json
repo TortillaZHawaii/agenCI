@@ -1,0 +1,28 @@
+{
+    "key": "Nowowiejska",
+    "latitude": 52.21982488573298, 
+    "longitude": 21.00919441595664,
+    "address": "Nowowiejska 21/25, 00-665 Warszawa",
+    "maxCapacity": 5
+}
+{
+    "key": "WEITI",
+    "latitude": 52.219088804782054,
+    "longitude": 21.011803569686858,
+    "address": "Nowowiejska 15/19, 00-665 Warszawa",
+    "maxCapacity": 120
+}
+{
+    "key": "Hala Koszyki",
+    "latitude": 52.22254530005872,
+    "longitude": 21.01169954817498,
+    "address": "Koszykowa 63, 00-667 Warszawa",
+    "maxCapacity": 100
+}
+{
+    "key": "Wawel",
+    "latitude": 50.05421186104386,
+    "longitude": 19.9354362103629,
+    "address": "Wawel 5, 31-001 Kraków",
+    "maxCapacity": 15
+}
