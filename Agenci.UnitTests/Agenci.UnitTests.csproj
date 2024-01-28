@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+      <PackageReference Include="Microsoft.Orleans.TestingHost" Version="8.0.0" />
+      <PackageReference Include="xunit" Version="2.6.6" />
+      <PackageReference Include="xunit.analyzers" Version="1.10.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Agenci.Abstractions\Agenci.Abstractions.csproj" />
+      <ProjectReference Include="..\Agenci.Grains\Agenci.Grains.csproj" />
+    </ItemGroup>
+
+</Project>
